@@ -11,11 +11,19 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', function (req, res) {
-  res.render('appian close2webhook default get');
+  res.send('appian close2webhook default get');
 });
 
 app.post('/webhook', function (req, res) {
-  webhook(req, res, 'appian', '/home/appian/web/Close2Webhook');
+  webhook(req, res, 'appian', '/home/appian/web/Close2Webhook', function () {
+    process.exec('pm2 restart 1', function (error, stdout, stderr) {
+      if (error) {
+        res.send('<pre>fail!!!\n' + error + '</pre>');
+      } else {
+        console.log('pm2 执行成功');
+      }
+    });
+  });
 });
 
 app.post('/multi', function (req, res) {
