@@ -41,7 +41,7 @@ app.post('/multi', function (req, res) {
 
 function webhook(req, res, token, cwd, callback) {
   console.log(' token: ', token);
-  console.log(' req.body.token: ', req.body['token']);
+  console.log(' req.body.token: ', req.body);
   if (token === req.body['token']) {
     process.exec('git pull', { 'cwd': cwd }, function (error, stdout, stderr) {
       console.log('stdout========================\n' + stdout);
