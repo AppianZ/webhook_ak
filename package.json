@@ -1,0 +1,27 @@
+{
+  "name": "Close2Node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AppianZ/Close2Node.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AppianZ/Close2Node/issues"
+  },
+  "homepage": "https://github.com/AppianZ/Close2Node#readme",
+  "dependencies": {
+    "body-parser": "^1.16.1",
+    "ejs": "^2.5.6",
+    "express": "^4.14.1",
+    "multer": "^1.3.0",
+    "shelljs": "^0.7.7"
+  }
+}
