@@ -7,25 +7,24 @@ app.engine('html', ejs.__express);
 app.set('view engine', 'html');
 app.set('views', __dirname);
 
-app.use(bodyParser.json()); // for parsing application/json
-app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', function (req, res) {
-  res.render('default');
+  res.render('appian close2webhook default get');
 });
 
-
 app.post('/webhook', function (req, res) {
-  webhook(req, res, 'xxx', '/home/www/fy-webhook');
+  webhook(req, res, 'appian', '/home/appian/web/Close2Webhook');
 });
 
 app.post('/multi', function (req, res) {
-  webhook(req, res, 'fyfemulti', '/home/www/fy_fe_mulit',function() {
-    process.exec('npm run build && npm run restart', { 'cwd': '/home/www/fy_fe_mulit' }, function (error, stdout, stderr) {
+  webhook(req, res, 'multi', '/home/appian/web/Close2Multi',function() {
+    process.exec('npm run build && npm run restart', { 'cwd': '/home/appian/web/Close2Multi' }, function (error, stdout, stderr) {
       if (error) {
         res.send('<pre>fail!!!\n' + error + '</pre>');
       } else {
-        console.log('npm run restart 执行成功');
+        console.log('npm run restart 执行成功 /multi');
       }
     });
 
@@ -33,9 +32,9 @@ app.post('/multi', function (req, res) {
 });
 
 function webhook(req, res, token, cwd, callback) {
+  console.log(' token: ', token);
+  console.log(' req.body.token: ', req.body['token']);
   if (token === req.body['token']) {
-
-    // console.info(process);
     process.exec('git pull', { 'cwd': cwd }, function (error, stdout, stderr) {
       console.log('stdout========================\n' + stdout);
       console.log('stderr========================\n' + stderr);
@@ -47,14 +46,13 @@ function webhook(req, res, token, cwd, callback) {
       }
     });
   } else {
-    console.log(' failed token ')
+    console.log(' failed token ');
     res.send('<pre>token不正确?</pre>');
   }
 }
 
-
 app.set('port', 3001);
 
 var server = app.listen(3001, function () {
-  console.log('Listening on port %d', server.address().port);
+  console.log('appian webhook listening on port %d', server.address().port);
 })

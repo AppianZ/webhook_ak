@@ -1,5 +1,5 @@
 {
-  "name": "Close2Node",
+  "name": "Close2Webhook",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,15 +8,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AppianZ/Close2Node.git"
+    "url": "git+https://github.com/AppianZ/Close2Webhook.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/AppianZ/Close2Node/issues"
+    "url": "https://github.com/AppianZ/Close2Webhook/issues"
   },
-  "homepage": "https://github.com/AppianZ/Close2Node#readme",
+  "homepage": "https://github.com/AppianZ/Close2Webhook#readme",
   "dependencies": {
     "body-parser": "^1.16.1",
     "ejs": "^2.5.6",
