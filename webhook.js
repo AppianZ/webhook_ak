@@ -20,7 +20,7 @@ app.post('/webhook', function (req, res) {
       if (error) {
         res.send('<pre>fail!!!\n' + error + '</pre>');
       } else {
-        console.log('pm2 执行成ggg功');
+        console.log('pm2 执行成11111功');
       }
     });
   });
