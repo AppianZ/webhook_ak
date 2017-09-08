@@ -6,7 +6,7 @@ var process = require('child_process');
 var createHandler = require('github-webhook-handler');
 var webhookHandler = createHandler({path: '/webhook', secret: 'appian'});
 var multiHandler = createHandler({path: '/multi', secret: 'appian'});
-var nodeHandler = createHandler({path: '/node', secret: 'appian'});
+// var nodeHandler = createHandler({path: '/node', secret: 'appian'});
 
 function run_cmd(cmd, args, callback) {
   var spawn = require('child_process').spawn;
@@ -48,9 +48,9 @@ multiHandler.on('error', function (err) {
   console.error('Error:', err.message)
 })
 
-nodeHandler.on('error', function (err) {
+/*nodeHandler.on('error', function (err) {
   console.error('Error:', err.message)
-})
+})*/
 
 webhookHandler.on('push', function (event) {
   // run_cmd('sh', ['./deploy.sh',event.payload.repository.name], function(text){ console.log(text) });
@@ -65,7 +65,7 @@ webhookHandler.on('push', function (event) {
 
 multiHandler.on('push', function (event) {
   webhook_cmd('/home/appian/web/Close2Multi', function () {
-    process.exec('npm run build', function (error, stdout, stderr) {
+    process.exec('npm run dev', function (error, stdout, stderr) {
       if (error) console.log('this error in' + event.payload.repository.name, error);
       else console.log('/multi 的 build 成功');
     });
