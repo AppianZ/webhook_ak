@@ -26,7 +26,7 @@ webhookHandler.on('error', function (err) {
 })
 
 webhookHandler.on('push', function (event) {
-  console.log('-------2push ↓↓↓↓');
+  console.log('-------3push ↓↓↓↓');
   console.log(event);
   console.log('Received a push event for %s to %s',
     event.payload.repository.name,
