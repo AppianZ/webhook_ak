@@ -54,9 +54,9 @@ webhookHandler.on('push', function (event) {
      if (error) {
       console.log('this error in' + event.payload.repository.name, error);
      } else {
-      console.log('pm2 执行成功-33');
+      console.log('/webhook 的 pm2 重启成功');
      }
    });
  });
-  console.log('-------4push ok');
+  console.log('---- /webhook --- push ok');
 })
