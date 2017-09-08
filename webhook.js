@@ -20,7 +20,7 @@ app.post('/webhook', function (req, res) {
       if (error) {
         res.send('<pre>fail!!!\n' + error + '</pre>');
       } else {
-        console.log('pm2 执行成功1');
+        console.log('pm2 执行成功2');
       }
     });
   });
@@ -41,7 +41,7 @@ app.post('/multi', function (req, res) {
 
 function webhook(req, res, token, cwd, callback) {
   console.log(' Secret: ', token);
-  console.log(' req.body.token: ', req.body);
+  console.log(' req.body.token: ', req);
   if (token === req.body['token']) {
     process.exec('git pull', { 'cwd': cwd }, function (error, stdout, stderr) {
       console.log('stdout========================\n' + stdout);
