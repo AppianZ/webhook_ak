@@ -34,22 +34,22 @@ function webhook_cmd(cwd, callback) {
 }
 
 http.createServer(function (req, res) {
-  multiHandler(req, res, function (err) {
+  /*multiHandler(req, res, function (err) {
     res.statusCode = 404;
     res.end('no such multiHandler location');
   })
   webhookHandler(req, res, function (err) {
     res.statusCode = 404;
     res.end('no such webhookHandler location');
-  })
+  })*/
 }).listen(3001);
 
 webhookHandler.on('error', function (err) {
-  console.error('Error:', err.message)
+  console.error('Error:', err.message);
 })
 
 multiHandler.on('error', function (err) {
-  console.error('Error:', err.message)
+  console.error('Error:', err.message);
 })
 
 /*nodeHandler.on('error', function (err) {
