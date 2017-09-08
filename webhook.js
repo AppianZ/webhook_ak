@@ -35,11 +35,11 @@ function webhook_cmd(cwd, callback) {
 
 http.createServer(function (req, res) {
   multiHandler(req, res, function (err) {
-    res.statusCode = 404
+    res.statusCode = 404;
     res.end('no such multiHandler location');
   })
   webhookHandler(req, res, function (err) {
-    res.statusCode = 404
+    res.statusCode = 404;
     res.end('no such webhookHandler location');
   })
 }).listen(3001);
