@@ -11,10 +11,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', function (req, res) {
+  console.log(req);
   res.send('appian close2webhook default get');
 });
 
 app.post('/webhook', function (req, res) {
+  console.log(req);
   webhook(req, res, 'appian', '/home/appian/web/Close2Webhook', function () {
     process.exec('pm2 restart 1', function (error, stdout, stderr) {
       if (error) {
