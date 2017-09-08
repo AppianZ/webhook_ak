@@ -10,7 +10,8 @@ function run_cmd(cmd, args, callback) {
   var spawn = require('child_process').spawn;
   var child = spawn(cmd, args);
   var resp = "";
-console.log(child);
+  console.log('this is child');
+  console.log(child);
   child.stdout.on('data', function (buffer) {
     resp += buffer.toString();
   });
