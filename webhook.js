@@ -17,7 +17,7 @@ console.log(child);
   child.stdout.on('end', function () {
     callback(resp)
   });
-}xk
+}
 
 
 function webhook_cmd(cwd, callback) {
