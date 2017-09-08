@@ -10,14 +10,14 @@ function run_cmd(cmd, args, callback) {
   var spawn = require('child_process').spawn;
   var child = spawn(cmd, args);
   var resp = "";
-
+console.log(child);
   child.stdout.on('data', function (buffer) {
     resp += buffer.toString();
   });
   child.stdout.on('end', function () {
     callback(resp)
   });
-}
+}xk
 
 
 function webhook_cmd(cwd, callback) {
@@ -47,11 +47,11 @@ webhookHandler.on('error', function (err) {
 
 webhookHandler.on('push', function (event) {
   console.log('-------3push ↓↓↓↓');
-  console.log(event);
   console.log('Received a push event for %s to %s',
     event.payload.repository.name,
     event.payload.ref);
   run_cmd('sh', ['./deploy.sh',event.payload.repository.name], function(text){ console.log(text) });
+  console.log('-------3push ok');
   /*webhook_cmd('/home/appian/web/Close2Webhook', function () {
    process.exec('pm2 restart 1', function (error, stdout, stderr) {
    if (error) {
