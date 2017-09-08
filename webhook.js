@@ -64,7 +64,7 @@ webhookHandler.on('push', function (event) {
       else console.log('/webhook 的 pm2 重启成功');
     });
   });
-  console.log('---- /webhook --- push ok');
+  console.log('---- /webhook --- push ok111');
 })
 
 multiHandler.on('push', function (event) {
