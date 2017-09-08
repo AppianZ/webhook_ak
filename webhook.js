@@ -5,6 +5,8 @@ var http = require('http');
 var process = require('child_process');
 var createHandler = require('github-webhook-handler');
 var webhookHandler = createHandler({path: '/webhook', secret: 'appian'});
+var multiHandler = createHandler({path: '/multi', secret: 'appian'});
+var nodeHandler = createHandler({path: '/node', secret: 'appian'});
 
 function run_cmd(cmd, args, callback) {
   var spawn = require('child_process').spawn;
@@ -17,7 +19,6 @@ function run_cmd(cmd, args, callback) {
     callback(resp);
   });
 }
-
 
 function webhook_cmd(cwd, callback) {
   process.exec('git pull', {'cwd': cwd}, function (error, stdout, stderr) {
@@ -32,7 +33,6 @@ function webhook_cmd(cwd, callback) {
   });
 }
 
-
 http.createServer(function (req, res) {
   webhookHandler(req, res, function (err) {
     res.statusCode = 404
@@ -44,19 +44,43 @@ webhookHandler.on('error', function (err) {
   console.error('Error:', err.message)
 })
 
+multiHandler.on('error', function (err) {
+  console.error('Error:', err.message)
+})
+
+nodeHandler.on('error', function (err) {
+  console.error('Error:', err.message)
+})
+
 webhookHandler.on('push', function (event) {
-  console.log('Received a push event for %s to %s',
-    event.payload.repository.name,
-    event.payload.ref);
   // run_cmd('sh', ['./deploy.sh',event.payload.repository.name], function(text){ console.log(text) });
   webhook_cmd('/home/appian/web/Close2Webhook', function () {
-   process.exec('pm2 restart 1', function (error, stdout, stderr) {
-     if (error) {
-      console.log('this error in' + event.payload.repository.name, error);
-     } else {
-      console.log('/webhook 的 pm2 重启成功');
-     }
-   });
- });
+    process.exec('pm2 restart 1', function (error, stdout, stderr) {
+      if (error) console.log('this error in' + event.payload.repository.name, error);
+      else console.log('/webhook 的 pm2 重启成功');
+    });
+  });
   console.log('---- /webhook --- push ok');
 })
+
+multiHandler.on('push', function (event) {
+  webhook_cmd('/home/appian/web/Close2Multi', function () {
+    process.exec('npm run build', function (error, stdout, stderr) {
+      if (error) console.log('this error in' + event.payload.repository.name, error);
+      else console.log('/multi 的 build 成功');
+    });
+  });
+  console.log('---- /multi --- push ok');
+})
+
+
+/*nodeHandler.on('push', function (event) {
+  // run_cmd('sh', ['./deploy.sh',event.payload.repository.name], function(text){ console.log(text) });
+  webhook_cmd('/home/appian/web/Close2Node', function () {
+    process.exec('pm2 restart 1', function (error, stdout, stderr) {
+      if (error) console.log('this error in' + event.payload.repository.name, error);
+      else console.log('/node 的 pm2 重启成功');
+    });
+  });
+  console.log('---- /node --- push ok');
+})*/
