@@ -10,13 +10,11 @@ function run_cmd(cmd, args, callback) {
   var spawn = require('child_process').spawn;
   var child = spawn(cmd, args);
   var resp = "";
-  console.log('this is child');
-  console.log(child);
   child.stdout.on('data', function (buffer) {
     resp += buffer.toString();
   });
   child.stdout.on('end', function () {
-    callback(resp)
+    callback(resp);
   });
 }
 
@@ -50,15 +48,15 @@ webhookHandler.on('push', function (event) {
   console.log('Received a push event for %s to %s',
     event.payload.repository.name,
     event.payload.ref);
-  run_cmd('sh', ['./deploy.sh',event.payload.repository.name], function(text){ console.log(text) });
-  console.log('-------4push ok');
-  /*webhook_cmd('/home/appian/web/Close2Webhook', function () {
+  // run_cmd('sh', ['./deploy.sh',event.payload.repository.name], function(text){ console.log(text) });
+  webhook_cmd('/home/appian/web/Close2Webhook', function () {
    process.exec('pm2 restart 1', function (error, stdout, stderr) {
-   if (error) {
-   console.log('this error in' + event.payload.repository.name, error);
-   } else {
-   console.log('pm2 执行成功-33');
-   }
+     if (error) {
+      console.log('this error in' + event.payload.repository.name, error);
+     } else {
+      console.log('pm2 执行成功-33');
+     }
    });
-   });*/
+ });
+  console.log('-------4push ok');
 })
