@@ -1,68 +1,35 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-var process = require('child_process');
-var ejs = require('ejs');
-var app = express();
-app.engine('html', ejs.__express);
-app.set('view engine', 'html');
-app.set('views', __dirname);
+/**
+ * Created by appian on 2017/9/8.
+ */
+var http = require('http');
+var createHandler = require('github-webhook-handler');
+var webhookHandler = createHandler({ path: '/webhook', secret: 'appian' });
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+function run_cmd(cmd, args, callback) {
+  var spawn = require('child_process').spawn;
+  var child = spawn(cmd, args);
+  var resp = "";
 
-app.get('/', function (req, res) {
-  console.log(req);
-  res.send('appian close2webhook default get');
-});
-
-app.post('/webhook', function (req, res) {
-  console.log(req);
-  webhook(req, res, 'appian', '/home/appian/web/Close2Webhook', function () {
-    process.exec('pm2 restart 1', function (error, stdout, stderr) {
-      if (error) {
-        res.send('<pre>fail!!!\n' + error + '</pre>');
-      } else {
-        console.log('pm2 执行成功-3');
-      }
-    });
-  });
-});
-
-app.post('/multi', function (req, res) {
-  webhook(req, res, 'multi', '/home/appian/web/Close2Multi',function() {
-    process.exec('npm run build && npm run restart', { 'cwd': '/home/appian/web/Close2Multi' }, function (error, stdout, stderr) {
-      if (error) {
-        res.send('<pre>fail!!!\n' + error + '</pre>');
-      } else {
-        console.log('npm run restart 执行成功 /multi');
-      }
-    });
-
-  });
-});
-
-function webhook(req, res, token, cwd, callback) {
-  console.log(' Secret: ', token);
-  console.log(' req.body.token: ', req);
-  if (token === req.body['token']) {
-    process.exec('git pull', { 'cwd': cwd }, function (error, stdout, stderr) {
-      console.log('stdout========================\n' + stdout);
-      console.log('stderr========================\n' + stderr);
-      if (error !== null) {
-        res.send('<pre>fail!!!\n' + stdout + error + '</pre>');
-      } else {
-        res.send('<pre>done!!!\n' + stdout + '</pre>');
-        callback && callback()
-      }
-    });
-  } else {
-    console.log(' failed token ');
-    res.send('<pre>token不正确?</pre>');
-  }
+  child.stdout.on('data', function(buffer) { resp += buffer.toString(); });
+  child.stdout.on('end', function() { callback (resp) });
 }
 
-app.set('port', 3001);
+http.createServer(function (req, res) {
+  webhookHandler(req, res, function (err) {
+    res.statusCode = 404
+    res.end('no such location')
+  })
+}).listen(3001);
 
-var server = app.listen(3001, function () {
-  console.log('appian webhook listening on port %d', server.address().port);
+webhookHandler.on('error', function (err) {
+  console.error('Error:', err.message)
+})
+
+webhookHandler.on('push', function (event) {
+  console.log('-------push ↓↓↓↓');
+  console.log(event);
+  console.log('Received a push event for %s to %s',
+    event.payload.repository.name,
+    event.payload.ref);
+  run_cmd('sh', ['./deploy.sh', event.payload.repository.name], function(text){ console.log(text) });
 })
