@@ -18,6 +18,7 @@ function run_cmd(cmd, args, callback) {
   });
 }
 
+
 function webhook_cmd(cwd, callback) {
   process.exec('git pull', {'cwd': cwd}, function (error, stdout, stderr) {
     console.log('stdout========================\n' + stdout);
@@ -30,6 +31,7 @@ function webhook_cmd(cwd, callback) {
     }
   });
 }
+
 
 http.createServer(function (req, res) {
   webhookHandler(req, res, function (err) {
@@ -46,5 +48,15 @@ webhookHandler.on('push', function (event) {
   console.log('Received a push event for %s to %s',
     event.payload.repository.name,
     event.payload.ref);
-  run_cmd('sh', ['./deploy.sh',event.payload.repository.name], function(text){ console.log(text) });
+  // run_cmd('sh', ['./deploy.sh',event.payload.repository.name], function(text){ console.log(text) });
+  webhook_cmd('/home/appian/web/Close2Webhook', function () {
+    process.exec('pm2 restart 1', function (error, stdout, stderr) {
+      if (error) {
+        console.log('this error in' + event.payload.repository.name, error);
+      } else {
+        console.log('/webhook 的 pm2 重启成功');
+      }
+    });
+  });
+  console.log('---- /webhook --- push ok');
 })
