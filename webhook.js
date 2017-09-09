@@ -48,8 +48,8 @@ webhookHandler.on('push', function (event) {
   console.log('Received a push event for %s to %s',
     event.payload.repository.name,
     event.payload.ref);
-  // run_cmd('sh', ['./deploy.sh',event.payload.repository.name], function(text){ console.log(text) });
-  webhook_cmd('/home/appian/web/Close2Webhook', function () {
+  run_cmd('sh', ['./deploy.sh',event.payload.repository.name], function(text){ console.log(text) });
+  /*webhook_cmd('/home/appian/web/Close2Webhook', function () {
     process.exec('pm2 restart 1', function (error, stdout, stderr) {
       if (error) {
         console.log('this error in' + event.payload.repository.name, error);
@@ -57,6 +57,6 @@ webhookHandler.on('push', function (event) {
         console.log('/webhook 的 pm2 重启成功');
       }
     });
-  });
+  });*/
   console.log('---- /webhook --- push ok');
 })
