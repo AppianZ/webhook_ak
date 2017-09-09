@@ -60,8 +60,6 @@ handler.on('error', function (err) {
 })
 
 handler.on('push', function (event) {
-  // run_cmd('sh', ['./deploy.sh',event.payload.repository.name], function(text){ console.log(text) });
-  var url = event.url;
   console.log('url#######', url);
   switch (url) {
     case '/webhook':
