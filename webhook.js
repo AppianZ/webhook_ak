@@ -1,10 +1,6 @@
 /**
  * Created by appian on 2017/9/8.
  */
-var http = require('http');
-var process = require('child_process');
-var createHandler = require('github-webhook-handler');
-
 function generaterHandler(handlerOpts) {
   var handlers = handlerOpts.reduce(function(hs, opts) {
     hs[opts.path] = createHandler(opts);
@@ -12,13 +8,17 @@ function generaterHandler(handlerOpts) {
   }, {});
 
   return http.createServer(function(req, res) {
-    var handler = handlers[req.url]
+    var handler = handlers[req.url];
     handler(req, res, function(err) {
       res.statusCode = 404;
       res.end('no such location T.T');
     })
   }).listen(3001);
 }
+
+var http = require('http');
+var process = require('child_process');
+var createHandler = require('github-webhook-handler');
 
 var handlerOpts = [{
   path: '/webhook',
@@ -27,7 +27,6 @@ var handlerOpts = [{
   path: '/multi',
   secret: 'appian',
 }];
-
 var handler = generaterHandler(handlerOpts);
 
 function run_cmd(cmd, args, callback) {
