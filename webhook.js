@@ -76,7 +76,7 @@ handler.on('push', function (event) {
       webhook_cmd('/home/appian/web/Close2Multi', function () {
         process.exec('npm run build', function (error, stdout, stderr) {
           if (error) console.log('this error in' + event.payload.repository.name, error);
-          else console.log('/multi 的 build 成功');
+          else console.log('/multi 的 build 成功111');
         });
       });
       console.log('---- /multi --- push ok');
