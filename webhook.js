@@ -13,7 +13,7 @@ function generaterHandler(handlerOpts) {
       res.statusCode = 404;
       res.end('no such location T.T');
     })
-  }).listen(3003);
+  }).listen(3006);
 }
 
 var http = require('http');
