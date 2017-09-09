@@ -43,6 +43,7 @@ function run_cmd(cmd, args, callback) {
 
 function webhook_cmd(cwd, callback) {
   process.exec('git pull', {'cwd': cwd}, function (error, stdout, stderr) {
+    console.log('stdout=====\n' + cwd);
     console.log('stdout=====\n' + stdout);
     console.log('stderr=====\n' + stderr);
     if (error !== null) {
