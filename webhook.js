@@ -61,6 +61,7 @@ handler.on('error', function (err) {
 handler.on('push', function (event) {
   // run_cmd('sh', ['./deploy.sh',event.payload.repository.name], function(text){ console.log(text) });
   var url = event.url;
+  console.log('url#######', url);
   switch (url) {
     case '/webhook':
       webhook_cmd('/home/appian/web/Close2Webhook', function () {
@@ -73,10 +74,10 @@ handler.on('push', function (event) {
       break;
     case '/multi':
       webhook_cmd('/home/appian/web/Close2Multi', function () {
-        process.exec('npm run dev', function (error, stdout, stderr) {
+        /*process.exec('npm run dev', function (error, stdout, stderr) {
           if (error) console.log('this error in' + event.payload.repository.name, error);
           else console.log('/multi 的 build 成功');
-        });
+        });*/
       });
       console.log('---- /multi --- push ok');
       break;
