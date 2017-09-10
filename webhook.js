@@ -1,45 +1,23 @@
 /**
  * Created by appian on 2017/9/9.
  */
-function generaterHandler(handlerOpts) {
-  var handlers = handlerOpts.reduce(function(hs, opts) {
-    hs[opts.path] = createHandler(opts);
-    return hs;
-  }, {});
-
-  return http.createServer(function(req, res) {
-    var handler = handlers[req.url];
-    handler(req, res, function(err) {
-      res.statusCode = 404;
-      res.end('no such location T.T');
-    })
-  }).listen(3006);
-}
-
-var http = require('http');
 var process = require('child_process');
-var createHandler = require('github-webhook-handler');
-
-var handlerOpts = [{
+var http = require('http');
+var createHandler = require('node-github-webhook');
+var handler = createHandler([{
   path: '/webhook',
   secret: 'appian',
 }, {
   path: '/multi',
   secret: 'appian',
-}];
-var handler = generaterHandler(handlerOpts);
+}])
 
-function run_cmd(cmd, args, callback) {
-  var spawn = require('child_process').spawn;
-  var child = spawn(cmd, args);
-  var resp = "";
-  child.stdout.on('data', function (buffer) {
-    resp += buffer.toString();
-  });
-  child.stdout.on('end', function () {
-    callback(resp);
-  });
-}
+http.createServer(function (req, res) {
+  handler(req, res, function (err) {
+    res.statusCode = 404
+    res.end('no such appian location');
+  })
+}).listen(3006)
 
 function webhook_cmd(cwd, callback) {
   process.exec('git pull', {'cwd': cwd}, function (error, stdout, stderr) {
@@ -55,13 +33,14 @@ function webhook_cmd(cwd, callback) {
   });
 }
 
+// handler
 handler.on('error', function (err) {
-  console.error('Error:', err.message);
+  console.error('Error:', err.message)
 })
-
 handler.on('push', function (event) {
-  console.log('url#######', url);
-  switch (url) {
+  var path = event.path
+  console.log('url#######', path);
+  switch (path) {
     case '/webhook':
       webhook_cmd('/home/appian/web/Close2Webhook', function () {
         process.exec('pm2 restart appian.webhook', function (error, stdout, stderr) {
@@ -70,7 +49,7 @@ handler.on('push', function (event) {
         });
       });
       console.log('---- /webhook --- push ok');
-      break;
+      break
     case '/multi':
       webhook_cmd('/home/appian/web/Close2Multi', function () {
         process.exec('npm run build', function (error, stdout, stderr) {
@@ -79,8 +58,20 @@ handler.on('push', function (event) {
         });
       });
       console.log('---- /multi --- push ok');
-      break;
+      break
     default:
-      break;
+      break
   }
 })
+
+function run_cmd(cmd, args, callback) {
+  var spawn = require('child_process').spawn;
+  var child = spawn(cmd, args);
+  var resp = "";
+  child.stdout.on('data', function (buffer) {
+    resp += buffer.toString();
+  });
+  child.stdout.on('end', function () {
+    callback(resp);
+  });
+}
