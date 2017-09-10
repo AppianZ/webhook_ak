@@ -48,7 +48,7 @@ handler.on('push', function (event) {
           else console.log('/webhook 的 pm2 重启成功');
         });
       });
-      console.log('---- /webhook --- push ok');
+      console.log('---- /webhook --- push ok111');
       break
     case '/multi':
       webhook_cmd('/home/appian/web/Close2Multi', function () {
