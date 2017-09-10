@@ -52,7 +52,7 @@ handler.on('push', function (event) {
       break
     case '/multi':
       webhook_cmd('/home/appian/web/Close2Multi', function () {
-        process.exec('npm run build', function (error, stdout, stderr) {
+        process.exec('npm run build', {cwd : '/home/appian/web/Close2Multi'},function (error, stdout, stderr) {
           if (error) console.log('this error in' + event.payload.repository.name, error);
           else console.log('/multi 的 build 成功111');
         });
