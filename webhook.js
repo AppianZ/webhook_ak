@@ -43,7 +43,7 @@ handler.on('push', function (event) {
   switch (path) {
     case '/webhook':
       webhook_cmd('/home/appian/web/Close2Webhook', function () {
-        process.exec('pm2 restart appian.webhook', function (error, stdout, stderr) {
+        process.exec('pm2 restart webhook', function (error, stdout, stderr) {
           if (error) console.log('this error in' + event.payload.repository.name, error);
           else console.log('/webhook 的 pm2 重启成功');
         });
@@ -52,7 +52,7 @@ handler.on('push', function (event) {
       break
     case '/multi':
       webhook_cmd('/home/appian/web/Close2Multi', function () {
-        process.exec('pwd', {cwd : '/home/appian/web/Close2Multi'}, function (error, stdout, stderr) {
+        process.exec('npm run dev', {cwd : '/home/appian/web/Close2Multi'}, function (error, stdout, stderr) {
           console.log('+++++', stdout);
           if (error) console.log('this error in' + event.payload.repository.name, error);
           else console.log('/multi 的 build 成功111');
