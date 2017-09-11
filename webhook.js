@@ -14,7 +14,7 @@ var handler = createHandler([{
 
 http.createServer(function (req, res) {
   handler(req, res, function (err) {
-    res.end(req, '------ req ↑ res ↓ ----', res);
+    res.end(req + '------ req ↑ res ↓ ----' + res);
     // res.statusCode = 404;
   })
 }).listen(3006)
