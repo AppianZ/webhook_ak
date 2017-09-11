@@ -13,6 +13,9 @@ var handler = createHandler([{
 }])
 
 http.createServer(function (req, res) {
+  res.send(req);
+  res.send('------ req ↑ res ↓ ----');
+  res.send(res);
   handler(req, res, function (err) {
     res.statusCode = 404;
     res.end('no such appian location4');
