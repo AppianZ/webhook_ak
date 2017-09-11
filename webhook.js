@@ -20,7 +20,16 @@ http.createServer(function (req, res) {
 }).listen(3006)
 
 function webhook_cmd(cwd, callback) {
-  process.exec('git pull', {'cwd': cwd}, function (error, stdout, stderr) {
+  process.spawn(
+    '/bin/sh',
+    ['-c','git pull'],
+    {
+      cwd: cwd,
+      env: null,
+    }
+  )
+
+  /*process.exec('git pull', {'cwd': cwd}, function (error, stdout, stderr) {
     console.log('stdout=====\n' + cwd);
     console.log('stdout=====\n' + stdout);
     console.log('stderr=====\n' + stderr);
@@ -30,7 +39,7 @@ function webhook_cmd(cwd, callback) {
       console.log('this ok in webhook_cmd');
       callback && callback();
     }
-  });
+  });*/
 }
 
 // handler
