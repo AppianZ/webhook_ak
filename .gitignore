@@ -1,6 +1,7 @@
 /node_modules
 dist
 /.idea
+deploy.sh
 webhook2.js
 webhook3.js
 webhook4.js
