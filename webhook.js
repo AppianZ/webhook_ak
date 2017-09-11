@@ -48,7 +48,7 @@ handler.on('push', function (event) {
           else console.log('/webhook 的 pm2 重启成功');
         });
       });
-      console.log('---- /webhook --- push ok111');
+      console.log('---- /webhook --- push case');
       break
     case '/multi':
       webhook_cmd('/home/appian/web/Close2Multi', function () {
@@ -58,21 +58,10 @@ handler.on('push', function (event) {
           else console.log('/multi 的 build 成功111');
         });
       });
-      console.log('---- /multi --- push ok');
+      console.log('---- /multi --- push case');
       break
     default:
       break
   }
 })
 
-function run_cmd(cmd, args, callback) {
-  var spawn = require('child_process').spawn;
-  var child = spawn(cmd, args);
-  var resp = "";
-  child.stdout.on('data', function (buffer) {
-    resp += buffer.toString();
-  });
-  child.stdout.on('end', function () {
-    callback(resp);
-  });
-}
