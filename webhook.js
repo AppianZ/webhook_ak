@@ -60,7 +60,7 @@ handler.on('push', function (event) {
         process.exec(execList[branch], {cwd : '/home/appian/web/multi_ak'}, function (error, stdout, stderr) {
           console.log('+++++', stdout);
           if (error) console.log('this error in' + event.payload.repository.name, error);
-          else console.log('/multi 的 build 成功111');
+          else console.log('/multi 执行 ' + execList[branch] + ' 成功');
         });
       });
       console.log('---- /multi --- push case');
