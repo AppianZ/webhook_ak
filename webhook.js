@@ -39,7 +39,7 @@ handler.on('error', function (err) {
 })
 handler.on('push', function (event) {
   var path = event.path
-  console.log('url#######', path);
+  console.log('url#######', event);
   switch (path) {
     case '/webhook':
       webhook_cmd('/home/appian/web/webhook_ak', function () {
