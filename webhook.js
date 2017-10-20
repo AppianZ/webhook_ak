@@ -41,6 +41,10 @@ handler.on('push', function (event) {
   var path = event.path
   var branch = event.payload.ref.replace('refs/heads/', '')
   console.log('分支名字:  ', branch);
+  var execList = {
+    'master' : 'npm run build',
+    'aws' : 'npm run build:aws'
+  }
   switch (path) {
     case '/webhook':
       webhook_cmd('/home/appian/web/webhook_ak', function () {
@@ -53,7 +57,7 @@ handler.on('push', function (event) {
       break
     case '/multi':
       webhook_cmd('/home/appian/web/multi_ak', function () {
-        process.exec('npm run build', {cwd : '/home/appian/web/multi_ak'}, function (error, stdout, stderr) {
+        process.exec(execList[branch], {cwd : '/home/appian/web/multi_ak'}, function (error, stdout, stderr) {
           console.log('+++++', stdout);
           if (error) console.log('this error in' + event.payload.repository.name, error);
           else console.log('/multi 的 build 成功111');
