@@ -39,7 +39,8 @@ handler.on('error', function (err) {
 })
 handler.on('push', function (event) {
   var path = event.path
-  console.log('url#######', event);
+  var branch = event.payload.ref.replace('refs/heads/', '')
+  console.log('分支名字:  ', branch);
   switch (path) {
     case '/webhook':
       webhook_cmd('/home/appian/web/webhook_ak', function () {
