@@ -10,6 +10,9 @@ var handler = createHandler([{
 }, {
   path: '/multi',
   secret: 'appian',
+}, {
+  path: '/express',
+  secret: 'appian',
 }])
 
 http.createServer(function (req, res) {
@@ -64,6 +67,16 @@ handler.on('push', function (event) {
         });
       });
       console.log('---- /multi --- push case');
+      break
+    case '/express':
+      webhook_cmd('/home/appian/web/node_ak', function () {
+        /*process.exec('gulp', {cwd : '/home/appian/web/node_ak'}, function (error, stdout, stderr) {
+          console.log('+++++', stdout);
+          if (error) console.log('this error in' + event.payload.repository.name, error);
+          else console.log('/multi 执行 ' + execList[branch] + ' 成功');
+        });*/
+      });
+      console.log('---- /node --- push case');
       break
     default:
       break
