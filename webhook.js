@@ -75,6 +75,7 @@ handler.on('push', function (event) {
           if (error) console.log('this error in' + event.payload.repository.name, error);
           else console.log('/multi 执行 ' + execList[branch] + ' 成功');
         });*/
+        console.log('/node 执行成功');
       });
       console.log('---- /node --- push case');
       break
