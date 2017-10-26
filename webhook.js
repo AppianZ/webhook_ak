@@ -19,8 +19,8 @@ http.createServer(function (req, res) {
   })
 }).listen(3006)
 
-function webhook_cmd(cwd, callback) {
-  process.exec('git pull', {'cwd': cwd, 'shell': '/bin/sh'}, function (error, stdout, stderr) {
+function webhook_cmd(cwd, callback, branch) {
+  process.exec('git pull origin ' + branch, {'cwd': cwd, 'shell': '/bin/sh'}, function (error, stdout, stderr) {
     console.log('stdout=====\n' + cwd);
     console.log('stdout=====\n' + stdout);
     console.log('stderr=====\n' + stderr);
@@ -62,7 +62,7 @@ handler.on('push', function (event) {
           if (error) console.log('this error in' + event.payload.repository.name, error);
           else console.log('/webhook 的 pm2 重启成功');
         });
-      });
+      }, 'master');
       console.log('---- /webhook --- push case');
       break
     case '/multi':
@@ -72,7 +72,7 @@ handler.on('push', function (event) {
           if (error) console.log('this error in' + event.payload.repository.name, error);
           else console.log('/multi 执行 ' + execList[branch].command + ' 成功');
         });
-      });
+      }, branch);
       /*webhook_cmd('/home/appian/web/multi_ak', function () {
         process.exec(execList[branch], {cwd : '/home/appian/web/multi_ak'}, function (error, stdout, stderr) {
           console.log('+++++', stdout);
@@ -90,7 +90,7 @@ handler.on('push', function (event) {
           else console.log('/multi 执行 ' + execList[branch] + ' 成功');
         });*/
         console.log('/node 执行成功');
-      });
+      }, 'master');
       console.log('---- /node --- push case');
       break
     default:
