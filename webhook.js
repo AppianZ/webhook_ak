@@ -1,6 +1,3 @@
-/**
- * Created by appian on 2017/9/9.
- */
 var process = require('child_process');
 var http = require('http');
 var createHandler = require('node-github-webhook');
@@ -30,7 +27,7 @@ function webhook_cmd(cwd, callback) {
     if (error !== null) {
       console.log('this error in webhook_cmd', error);
     } else {
-      console.log('this ok in webhook_cmd');
+      console.log('this ok in webhook_cmd, then start callback');
       callback && callback();
     }
   });
@@ -45,8 +42,18 @@ handler.on('push', function (event) {
   var branch = event.payload.ref.replace('refs/heads/', '')
   console.log('分支名字:  ', branch);
   var execList = {
-    'master' : 'npm run build',
-    'aws' : 'npm run build:aws'
+    'master' : {
+      name: 'prod',
+      command: 'npm run build',
+    },
+    'aws' : {
+      name: 'prod',
+      command: 'npm run build:aws'
+    },
+    'test' : {
+      name: 'test',
+      command: 'npm run build:test'
+    },
   }
   switch (path) {
     case '/webhook':
@@ -59,13 +66,20 @@ handler.on('push', function (event) {
       console.log('---- /webhook --- push case');
       break
     case '/multi':
-      webhook_cmd('/home/appian/web/multi_ak', function () {
+      webhook_cmd('/home/appian/workspace/' + execList[branch].name + '_multi_ak', function () {
+        process.exec(execList[branch].command, {cwd : '/home/appian/workspace/' + execList[branch].name + '_multi_ak'}, function (error, stdout, stderr) {
+          console.log('+++++', stdout);
+          if (error) console.log('this error in' + event.payload.repository.name, error);
+          else console.log('/multi 执行 ' + execList[branch].command + ' 成功');
+        });
+      });
+      /*webhook_cmd('/home/appian/web/multi_ak', function () {
         process.exec(execList[branch], {cwd : '/home/appian/web/multi_ak'}, function (error, stdout, stderr) {
           console.log('+++++', stdout);
           if (error) console.log('this error in' + event.payload.repository.name, error);
           else console.log('/multi 执行 ' + execList[branch] + ' 成功');
         });
-      });
+      });*/
       console.log('---- /multi --- push case');
       break
     case '/express':
