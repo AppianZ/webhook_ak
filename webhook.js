@@ -19,6 +19,8 @@ http.createServer(function (req, res) {
   })
 }).listen(3006)
 
+console.log('~~~~~~~~ port: 3006!! ~~~~~~~')
+
 function webhook_cmd(cwd, callback, branch) {
   process.exec('git pull origin ' + branch, {'cwd': cwd, 'shell': '/bin/sh'}, function (error, stdout, stderr) {
     console.log('stdout=====\n' + cwd);
