@@ -73,24 +73,17 @@ handler.on('push', function (event) {
           else console.log('/multi 执行 ' + execList[branch].command + ' 成功');
         });
       }, branch);
-      /*webhook_cmd('/home/appian/web/multi_ak', function () {
-        process.exec(execList[branch], {cwd : '/home/appian/web/multi_ak'}, function (error, stdout, stderr) {
-          console.log('+++++', stdout);
-          if (error) console.log('this error in' + event.payload.repository.name, error);
-          else console.log('/multi 执行 ' + execList[branch] + ' 成功');
-        });
-      });*/
       console.log('---- /multi --- push case');
       break
     case '/express':
       webhook_cmd('/home/appian/web/node_ak', function () {
-        /*process.exec('gulp', {cwd : '/home/appian/web/node_ak'}, function (error, stdout, stderr) {
+        process.exec('npm run restart:' + branch, {cwd : '/home/appian/web/node_ak'}, function (error, stdout, stderr) {
           console.log('+++++', stdout);
           if (error) console.log('this error in' + event.payload.repository.name, error);
-          else console.log('/multi 执行 ' + execList[branch] + ' 成功');
-        });*/
+          else console.log('/multi 执行 ' + 'npm run restart:' + branch + ' 成功');
+        });
         console.log('/node 执行成功');
-      }, 'master');
+      }, branch);
       console.log('---- /node --- push case');
       break
     default:
