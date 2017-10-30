@@ -40,7 +40,7 @@ handler.on('error', function (err) {
 handler.on('push', function (event) {
   var path = event.path
   var branch = event.payload.ref.replace('refs/heads/', '')
-  console.log('分支名字:  ', branch);
+  console.log('the BRANCH updating:  ', branch);
   var execList = {
     'master' : {
       name: 'prod',
@@ -60,7 +60,7 @@ handler.on('push', function (event) {
       webhook_cmd('/home/appian/web/webhook_ak', function () {
         process.exec('pm2 restart appian.webhook', function (error, stdout, stderr) {
           if (error) console.log('this error in' + event.payload.repository.name, error);
-          else console.log('/webhook 的 pm2 重启成功');
+          else console.log('/webhook pm2 restart success');
         });
       }, 'master');
       break
