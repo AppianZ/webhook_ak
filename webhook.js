@@ -82,8 +82,8 @@ handler.on('push', function (event) {
               else console.log('---- /node : ' + execList[branch].name + '_node_ak ---- gulp build & npm run restart:' + branch + '---- push case ---- ');
             });
           }
-        }, branch);
-      });
+        });
+      }, branch);
       break
     default:
       break
