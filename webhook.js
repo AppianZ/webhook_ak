@@ -79,7 +79,7 @@ handler.on('push', function (event) {
           else {
             process.exec('npm run restart:' + execList[branch].name, {cwd: '/home/appian/workspace/' + execList[branch].name + '_node_ak'}, function (error, stdout, stderr) {
               if (error) console.log('this error in' + event.payload.repository.name, error);
-              else console.log('---- /node : ' + execList[branch].name + '_node_ak ---- gulp build & npm run restart:' + branch + ' ---- push case ---- ');
+              else console.log('---- /node : ' + execList[branch].name + '_node_ak ---- gulp build & npm run restart:' + execList[branch].name + ' ---- push case ---- ');
             });
           }
         });
