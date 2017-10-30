@@ -68,7 +68,12 @@ handler.on('push', function (event) {
       webhook_cmd('/home/appian/workspace/' + execList[branch].name + '_multi_ak', function () {
         process.exec(execList[branch].command, {cwd : '/home/appian/workspace/' + execList[branch].name + '_multi_ak'}, function (error, stdout, stderr) {
           if (error) console.log('this error in' + event.payload.repository.name, error);
-          else console.log('---- /multi : ' + execList[branch].name + '_multi_ak ---- ' + execList[branch].command + ' ---- push case ---- ');
+          else {
+            process.exec('\cp -rf ./../' + execList[branch].name + '_multi_ak/public ./', {cwd : '/home/appian/workspace/' + execList[branch].name + '_node_ak'}, function () {
+              if (error) console.log('this error in' + event.payload.repository.name, error);
+              else console.log('---- /multi : ' + execList[branch].name + '_multi_ak ---- ' + execList[branch].command + ' ---- push case ---- ');
+            })
+          }
         });
       }, branch);
       break
