@@ -19,8 +19,6 @@ http.createServer(function (req, res) {
   })
 }).listen(3006)
 
-console.log('~~~~~~~~ port: 3006!! ~~~~~~~')
-
 function webhook_cmd(cwd, callback, branch) {
   process.exec('git pull origin ' + branch, {'cwd': cwd, 'shell': '/bin/sh'}, function (error, stdout, stderr) {
     console.log('stdout=====\n' + cwd);
@@ -65,28 +63,27 @@ handler.on('push', function (event) {
           else console.log('/webhook 的 pm2 重启成功');
         });
       }, 'master');
-      console.log('---- /webhook --- push case');
       break
     case '/multi':
       webhook_cmd('/home/appian/workspace/' + execList[branch].name + '_multi_ak', function () {
         process.exec(execList[branch].command, {cwd : '/home/appian/workspace/' + execList[branch].name + '_multi_ak'}, function (error, stdout, stderr) {
-          console.log('+++++', stdout);
           if (error) console.log('this error in' + event.payload.repository.name, error);
-          else console.log('/multi 执行 ' + execList[branch].command + ' 成功');
+          else console.log('---- /multi : ' + execList[branch].name + '_multi_ak ---- ' + execList[branch].command + '---- push case ---- ');
         });
       }, branch);
-      console.log('---- /multi --- push case');
       break
     case '/express':
-      webhook_cmd('/home/appian/web/node_ak', function () {
-        process.exec('npm run restart:' + branch, {cwd : '/home/appian/web/node_ak'}, function (error, stdout, stderr) {
-          console.log('+++++', stdout);
+      webhook_cmd('/home/appian/workspace/' + execList[branch].name + '_node_ak', function () {
+        process.exec('gulp build', {cwd: '/home/appian/workspace/' + execList[branch].name + '_node_ak'}, function (error, stdout, stderr) {
           if (error) console.log('this error in' + event.payload.repository.name, error);
-          else console.log('/multi 执行 ' + 'npm run restart:' + branch + ' 成功');
-        });
-        console.log('/node 执行成功');
-      }, branch);
-      console.log('---- /node --- push case');
+          else {
+            process.exec('npm run restart:' + branch, {cwd: '/home/appian/workspace/' + execList[branch].name + '_node_ak'}, function (error, stdout, stderr) {
+              if (error) console.log('this error in' + event.payload.repository.name, error);
+              else console.log('---- /node : ' + execList[branch].name + '_node_ak ---- gulp build & npm run restart:' + branch + '---- push case ---- ');
+            });
+          }
+        }, branch);
+      });
       break
     default:
       break
