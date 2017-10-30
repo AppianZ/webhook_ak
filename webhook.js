@@ -77,7 +77,7 @@ handler.on('push', function (event) {
         process.exec('gulp build', {cwd: '/home/appian/workspace/' + execList[branch].name + '_node_ak'}, function (error, stdout, stderr) {
           if (error) console.log('this error in' + event.payload.repository.name, error);
           else {
-            process.exec('npm run restart:' + branch, {cwd: '/home/appian/workspace/' + execList[branch].name + '_node_ak'}, function (error, stdout, stderr) {
+            process.exec('npm run restart:' + execList[branch].name, {cwd: '/home/appian/workspace/' + execList[branch].name + '_node_ak'}, function (error, stdout, stderr) {
               if (error) console.log('this error in' + event.payload.repository.name, error);
               else console.log('---- /node : ' + execList[branch].name + '_node_ak ---- gulp build & npm run restart:' + branch + ' ---- push case ---- ');
             });
