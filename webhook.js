@@ -77,6 +77,19 @@ handler.on('push', function (event) {
         });
       }, branch);
       break
+    case '/spa':
+      webhook_cmd('/home/appian/workspace/' + execList[branch].name + '_spa_ak', function () {
+        process.exec(execList[branch].command, {cwd : '/home/appian/workspace/' + execList[branch].name + '_spa_ak'}, function (error, stdout, stderr) {
+          if (error) console.log('this error in spa --- ' + execList[branch].command + ' : ' + event.payload.repository.name, error);
+          else {
+            process.exec('rm -rf public && \cp -rf ./../' + execList[branch].name + '_spa_ak/public ./ && npm run restart:' + execList[branch].name, {cwd : '/home/appian/workspace/' + execList[branch].name + '_node_spa_ak'}, function () {
+              if (error) console.log('this error spa --- cp : ' + event.payload.repository.name, error);
+              else console.log('---- /spa : ' + execList[branch].name + '_spa_ak ---- ' + execList[branch].command + ' ---- push case ---- ');
+            })
+          }
+        });
+      }, branch);
+      break
     case '/express':
       webhook_cmd('/home/appian/workspace/' + execList[branch].name + '_node_ak', function () {
         process.exec('rm -rf dist && gulp build', {cwd: '/home/appian/workspace/' + execList[branch].name + '_node_ak'}, function (error, stdout, stderr) {
