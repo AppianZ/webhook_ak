@@ -97,7 +97,20 @@ handler.on('push', function (event) {
           else {
             process.exec('npm run restart:' + execList[branch].name, {cwd: '/home/appian/workspace/' + execList[branch].name + '_node_ak'}, function (error, stdout, stderr) {
               if (error) console.log('this error in express --- npm run restart:' + execList[branch].name + ' : ' + event.payload.repository.name, error);
-              else console.log('---- /node : ' + execList[branch].name + '_node_ak ---- gulp build & npm run restart:' + execList[branch].name + ' ---- push case ---- ');
+              else console.log('---- /express : ' + execList[branch].name + '_node_ak ---- gulp build & npm run restart:' + execList[branch].name + ' ---- push case ---- ');
+            });
+          }
+        });
+      }, branch);
+      break
+    case '/node':
+      webhook_cmd('/home/appian/workspace/' + execList[branch].name + '_node_spa_ak', function () {
+        process.exec('rm -rf dist && gulp build', {cwd: '/home/appian/workspace/' + execList[branch].name + '_node_spa_ak'}, function (error, stdout, stderr) {
+          if (error) console.log('this error in node --- gulp build : ' + event.payload.repository.name, error);
+          else {
+            process.exec('npm run restart:' + execList[branch].name, {cwd: '/home/appian/workspace/' + execList[branch].name + '_node_spa_ak'}, function (error, stdout, stderr) {
+              if (error) console.log('this error in node --- npm run restart:' + execList[branch].name + ' : ' + event.payload.repository.name, error);
+              else console.log('---- /node : ' + execList[branch].name + '_node_spa_ak ---- gulp build & npm run restart:' + execList[branch].name + ' ---- push case ---- ');
             });
           }
         });
