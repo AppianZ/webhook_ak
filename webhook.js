@@ -8,7 +8,13 @@ var handler = createHandler([{
   path: '/multi',
   secret: 'appian',
 }, {
+  path: '/spa',
+  secret: 'appian',
+}, {
   path: '/express',
+  secret: 'appian',
+}, {
+  path: '/node',
   secret: 'appian',
 }])
 
