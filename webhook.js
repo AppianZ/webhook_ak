@@ -16,6 +16,9 @@ var handler = createHandler([{
 }, {
   path: '/node',
   secret: 'appian',
+}, {
+  path: '/react',
+  secret: 'appian',
 }])
 
 http.createServer(function (req, res) {
@@ -118,6 +121,16 @@ handler.on('push', function (event) {
               if (error) console.log('this error in node --- npm run restart:' + execList[branch].name + ' : ' + event.payload.repository.name, error);
               else console.log('---- /node : ' + execList[branch].name + '_node_spa_ak ---- gulp build & npm run restart:' + execList[branch].name + ' ---- push case ---- ');
             });
+          }
+        });
+      }, branch);
+      break
+    case '/react':
+      webhook_cmd('/home/appian/workspace/' + execList[branch].name + '_react_ak', function () {
+        process.exec('rm -rf dist && npm run build', {cwd: '/home/appian/workspace/' + execList[branch].name + '_react_ak'}, function (error, stdout, stderr) {
+          if (error) console.log('this error in node --- npm run build : ' + event.payload.repository.name, error);
+          else {
+            console.log('---- /react : ' + execList[branch].name + '_react_ak ---- npm run build ---- push case ---- ');
           }
         });
       }, branch);
