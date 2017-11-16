@@ -126,11 +126,11 @@ handler.on('push', function (event) {
       }, branch);
       break
     case '/react':
-      webhook_cmd('/home/appian/workspace/' + execList[branch].name + '_react_ak', function () {
-        process.exec('rm -rf dist && npm run build', {cwd: '/home/appian/workspace/' + execList[branch].name + '_react_ak'}, function (error, stdout, stderr) {
-          if (error) console.log('this error in node --- npm run build : ' + event.payload.repository.name, error);
+      webhook_cmd('/home/appian/workspace/react_ak', function () {
+        process.exec('rm -rf dist && npm run build', {cwd: '/home/appian/workspace/react_ak'}, function (error, stdout, stderr) {
+          if (error) console.log('this error in react --- npm run build : ' + event.payload.repository.name, error);
           else {
-            console.log('---- /react : ' + execList[branch].name + '_react_ak ---- npm run build ---- push case ---- ');
+            console.log('---- /react : react_ak ---- npm run build ---- push case ---- ');
           }
         });
       }, branch);
