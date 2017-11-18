@@ -138,7 +138,7 @@ handler.on('push', function (event) {
         });
       }, branch);
       break
-    case '/node':
+    case '/reactnode':
       webhook_cmd('/home/appian/workspace/react_node_ak', function () {
         process.exec('rm -rf dist && gulp build', {cwd: '/home/appian/workspace/react_node_ak'}, function (error, stdout, stderr) {
           if (error) console.log('this error in node --- gulp build : ' + event.payload.repository.name, error);
