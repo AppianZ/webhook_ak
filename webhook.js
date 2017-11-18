@@ -143,10 +143,7 @@ handler.on('push', function (event) {
         process.exec('rm -rf dist && gulp build', {cwd: '/home/appian/workspace/react_node_ak'}, function (error, stdout, stderr) {
           if (error) console.log('this error in node --- gulp build : ' + event.payload.repository.name, error);
           else {
-            process.exec('npm run restart:prod', {cwd: '/home/appian/workspace/react_node_ak'}, function (error, stdout, stderr) {
-              if (error) console.log('this error in node --- npm run restart:prod : ' + event.payload.repository.name, error);
-              else console.log('---- /node : react_node_ak ---- gulp build & npm run restart:prod ---- push case ---- ');
-            });
+            console.log('---- /node : react_node_ak ---- gulp build & npm run restart:prod ---- push case ---- ');
           }
         });
       }, branch);
